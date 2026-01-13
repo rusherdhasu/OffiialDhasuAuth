@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DhasuKeys | World-Class Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            if (typeof axios === 'undefined') {
+                const errorDiv = document.createElement('div');
+                errorDiv.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#dc3545; color:#fff; padding:15px 25px; border-radius:10px; z-index:9999; font-weight:bold; box-shadow:0 10px 30px rgba(0,0,0,0.5); text-align:center;';
+                errorDiv.innerHTML = '⚠️ CONNECTION BLOCKED: Your browser is blocking critical system scripts (Tracking Prevention). <br> Please disable Tracking Prevention or use a different browser to access the Command Center.';
+                document.body.appendChild(errorDiv);
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Premium Background Elements -->
+    <div class="bg-overlay">
+        <div class="blob"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <!-- Auth Section -->
+    <div id="auth-container" class="auth-wrapper">
+        <div class="auth-bg-layer"></div>
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+
+        <div class="auth-top-bar">
+            <span><i class="ph-fill ph-circle" style="color:var(--success)"></i> Systems Online</span>
+            <span>Secure Environment</span>
+        </div>
+
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Dhasu<span>Auth</span></h1>
+                <p>Advanced Hardware Management Console</p>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-section">
+                <div class="input-group">
+                    <label>Operator Identity</label>
+                    <input type="text" id="login-username" placeholder="Username">
+                </div>
+                <div class="input-group">
+                    <label>Secret Key</label>
+                    <input type="password" id="login-password" placeholder="••••••••">
+                </div>
+                <button id="login-btn" class="primary-btn">INITIALIZE SESSION <i class="ph ph-arrow-right"></i></button>
+                <div class="switch-auth">
+                    New Operator? <a href="#" id="show-register">Request Access</a>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-section" class="hidden">
+                <div class="input-group">
+                    <label>New Identity</label>
+                    <input type="text" id="reg-username" placeholder="Choose Username">
+                </div>
+                <div class="input-group">
+                    <label>Access Email</label>
+                    <input type="email" id="reg-email" placeholder="contact@domain.com">
+                </div>
+                <div class="input-group">
+                    <label>Set Password</label>
+                    <input type="password" id="reg-password" placeholder="Create Password">
+                </div>
+                <button id="register-btn" class="primary-btn">CREATE IDENTITY <i class="ph ph-user-plus"></i></button>
+                <div class="switch-auth">
+                    Existing Operator? <a href="#" id="show-login">Return to Login</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-bottom-bar">
+            <span>&copy; 2026 DhasuAuth</span>
+            <span style="opacity:0.2">|</span>
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+            <a href="#">Support</a>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboard-section" class="dashboard-wrapper hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo"><i class="ph-fill ph-shield-check"></i>DhasuAuth</div>
+            </div>
+            <div class="sidebar-nav">
+                <div class="nav-label">Main System</div>
+                <div id="apps-list" class="apps-nav-list">
+                    <!-- Apps dynamically loaded -->
+                </div>
+                <button id="create-app-btn" class="add-app-btn"><i class="ph ph-plus-circle"></i> CREATE PANEL</button>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <p id="user-greeting">System Admin</p>
+                    <button id="logout-btn"><i class="ph ph-power"></i> TERMINATE SESSION</button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="no-app-selected" class="empty-state">
+                <div class="empty-icon"><i class="ph-fill ph-crown" style="color: var(--primary);"></i></div>
+                <h2>World-Class Command</h2>
+                <p>Select an operational panel from the grid to initialize management.</p>
+            </div>
+
+            <div id="app-dashboard" class="app-view hidden">
+                <header class="app-header">
+                    <div class="app-title-group">
+                        <h1 id="selected-app-name">Command Center</h1>
+                        <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: -10px;">Operational
+                            Authorization & Node Control</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="edit-app-btn" class="action-btn-small" style="padding: 10px 20px;"><i
+                                class="ph ph-gear-six"></i> EDIT SETTINGS</button>
+                        <button id="delete-app-btn" class="danger-btn"><i class="ph ph-trash"></i> DELETE PANEL</button>
+                    </div>
+                </header>
+
+                <!-- Panel Identity Card -->
+                <div class="panel-config-card">
+                    <div class="config-item">
+                        <label>Application ID</label>
+                        <span id="display-app-id" class="config-value">-</span>
+                    </div>
+                    <div class="config-item">
+                        <label>Secret Token</label>
+                        <span id="display-app-secret" class="config-value">-</span>
+                    </div>
+                    <div class="config-item">
+                        <label>Panel version</label>
+                        <span id="display-app-version" class="config-value">1.0</span>
+                    </div>
+
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="ph-fill ph-users-three" style="color: var(--primary);"></i>
+                        <div class="stat-value" id="stat-total">0</div>
+                        <div class="stat-label">Total Operator Base</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="ph-fill ph-broadcast" style="color: var(--success);"></i>
+                        <div class="stat-value" id="stat-active">0</div>
+                        <div class="stat-label">Live Active Nodes</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="ph-fill ph-warning-octagon" style="color: var(--danger);"></i>
+                        <div class="stat-value" id="stat-banned">0</div>
+                        <div class="stat-label">Blacklisted Units</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="ph-fill ph-fingerprint" style="color: var(--primary);"></i>
+                        <div class="stat-value" id="stat-hwids">0</div>
+                        <div class="stat-label">Operational HWIDs</div>
+                    </div>
+                </div>
+
+                <!-- Sub Navigation -->
+                <div class="sub-nav">
+                    <button class="sub-nav-item active" onclick="switchSubTab('users')">Users</button>
+                    <button class="sub-nav-item" onclick="switchSubTab('public')">Public Login</button>
+                    <button class="sub-nav-item" onclick="switchSubTab('hwid-access')">HWID Access</button>
+                </div>
+
+                <div id="users-tab-content">
+                    <div class="management-grid">
+                        <!-- User List -->
+                        <section class="user-list-section">
+                            <div class="section-header">
+                                <h2><i class="ph ph-users"></i> NODE MANAGEMENT</h2>
+                                <button id="add-user-btn" class="primary-btn"
+                                    style="width: auto; padding: 10px 20px; font-size: 0.8rem;">
+                                    <i class="ph ph-plus-circle"></i> ADD USER
+                                </button>
+                            </div>
+                            <div class="search-box">
+                                <i class="ph ph-magnifying-glass search-icon"></i>
+                                <input type="text" id="user-search"
+                                    placeholder="Query identity or hardware signature...">
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Username</th>
+                                            <th>Status</th>
+                                            <th>Created</th>
+                                            <th>Last Login</th>
+                                            <th>Expires</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="app-users-table-body">
+                                        <!-- Users loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Manager Form Placeholder (Layout Balance) -->
+                        <section class="user-form-section">
+                            <div class="section-header"></div>
+                        </section>
+                    </div>
+                </div>
+
+                <div id="hwid-access-tab-content" class="hidden">
+                    <div class="management-grid">
+                        <section class="user-list-section">
+                            <div class="section-header">
+                                <h2><i class="ph-fill ph-fingerprint"></i> HARDWARE WHITELIST</h2>
+                                <button id="add-hwid-btn" class="primary-btn"
+                                    style="width: auto; padding: 10px 20px; font-size: 0.8rem;">
+                                    <i class="ph ph-shield-plus"></i> AUTHORIZE HWID
+                                </button>
+                            </div>
+
+                            <div class="search-box">
+                                <i class="ph ph-faders search-icon"></i>
+                                <input type="text" id="hwid-search" placeholder="Filter authorized hardware nodes...">
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                            <th>Created</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="hwid-access-table-body">
+                                        <!-- HWIDs loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Manager Form Placeholder (Layout Balance) -->
+                        <section class="user-form-section">
+                            <div class="section-header"></div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="create-app-modal" class="modal hidden">
+        <div class="modal-content" style="max-width: 480px;">
+            <div class="modal-header">
+                <h2><i class="ph ph-plus-circle" style="color: var(--primary);"></i> Initialize New Panel</h2>
+                <button class="close-modal-btn" onclick="closeModal('create-app-modal')"><i
+                        class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Management Identity (Name)</label>
+                    <input type="text" id="new-app-name" placeholder="e.g. Dhasu Ultimate Spoofer">
+                </div>
+                <div class="modal-actions">
+                    <button id="confirm-create-app" class="primary-btn">PROVISION SYSTEM <i
+                            class="ph ph-lightning"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-app-modal" class="modal hidden">
+        <div class="modal-content" style="max-width: 480px;">
+            <div class="modal-header">
+                <h2><i class="ph ph-note-pencil" style="color: var(--primary);"></i> Edit Configuration</h2>
+                <button class="close-modal-btn" onclick="closeModal('edit-app-modal')"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Operational Identity (Name)</label>
+                    <input type="text" id="edit-app-name" placeholder="Name...">
+                </div>
+                <div class="input-group">
+                    <label>System Versioning</label>
+                    <input type="text" id="edit-app-version-input" placeholder="e.g. 1.0.4">
+                </div>
+                <div class="modal-actions">
+                    <button id="confirm-edit-app" class="primary-btn">UPDATE IDENTITY <i
+                            class="ph ph-check"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="add-user-modal" class="modal hidden">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2><i class="ph ph-user-plus" style="color: var(--primary);"></i> Add Operational Node</h2>
+                <button class="close-modal-btn" onclick="closeModal('add-user-modal')"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Username (Identity)</label>
+                    <input type="text" id="add-username" placeholder="Enter operator login...">
+                </div>
+                <div class="input-group">
+                    <label>Access Password</label>
+                    <input type="text" id="add-password" placeholder="Generate or enter secure key...">
+                </div>
+                <div class="input-group">
+                    <label>Lease Duration (Access Level)</label>
+                    <select id="add-duration">
+                        <option value="1">Trial (1 Day)</option>
+                        <option value="7">Executive (7 Days)</option>
+                        <option value="30" selected>Premium (30 Days)</option>
+                        <option value="90">Elite (90 Days)</option>
+                        <option value="365">Master (1 Year)</option>
+                        <option value="36500">Lifetime Access</option>
+                    </select>
+                    <p style="font-size: 0.75rem; color: var(--text-dim); opacity: 0.7; margin-top: 8px;">Expiry date
+                        will be calculated automatically upon creation.</p>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="add-hwid-lock-disable">
+                    <label for="add-hwid-lock-disable">Public Login (Disable HWID Lock)</label>
+                </div>
+                <div class="modal-actions">
+                    <button id="confirm-add-user" class="primary-btn">PROVISION NODE <i
+                            class="ph ph-lightning"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="edit-user-modal" class="modal hidden">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>Edit User</h3>
+                <button class="close-modal-btn" onclick="closeModal('edit-user-modal')"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" id="edit-username" readonly style="opacity: 0.7;">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="text" id="edit-password">
+                </div>
+                <div class="input-group">
+                    <label>Status</label>
+                    <select id="edit-status" class="styled-select">
+                        <option value="active">Active</option>
+                        <option value="ban">Banned</option>
+                        <option value="pause">Paused</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Expiry Date</label>
+                    <input type="date" id="edit-expiry">
+                </div>
+                <div class="input-group">
+                    <label>Reason (for Ban/Pause)</label>
+                    <input type="text" id="edit-reason" placeholder="Optional">
+                </div>
+                <div class="input-group">
+                    <label>HWID</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="edit-hwid" readonly style="flex: 1;">
+                        <button id="reset-hwid-btn" class="secondary-btn">Reset</button>
+                    </div>
+                </div>
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="edit-hwid-lock-disable">
+                    <label for="edit-hwid-lock-disable">Public Login (Disable HWID Lock)</label>
+                </div>
+                <div class="modal-actions" style="margin-top: 25px; justify-content: space-between;">
+                    <button id="delete-user-btn" class="danger-btn">Delete User</button>
+                    <button id="save-user-btn" class="primary-btn">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit HWID Modal -->
+    <div id="edit-hwid-modal" class="modal hidden">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>Edit Hardware Access</h3>
+                <button class="close-modal-btn" onclick="closeModal('edit-hwid-modal')"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Name/Tag</label>
+                    <input type="text" id="edit-hwid-name" placeholder="e.g. Premium User X">
+                </div>
+                <div class="input-group">
+                    <label>HWID</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="edit-hwid-value" readonly style="flex: 1;">
+                        <button id="reset-hwid-btn" class="secondary-btn"
+                            style="padding: 12px 20px; white-space: nowrap;">
+                            <i class="ph ph-arrow-counter-clockwise"></i> Reset
+                        </button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Status</label>
+                    <select id="edit-hwid-status" class="styled-select">
+                        <option value="active">Active</option>
+                        <option value="ban">Banned</option>
+                        <option value="pause">Paused</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Expiry Date</label>
+                    <input type="date" id="edit-hwid-expiry">
+                </div>
+                <div class="input-group">
+                    <label>Reason (for Ban/Pause)</label>
+                    <input type="text" id="edit-hwid-reason" placeholder="e.g. Subscription expired">
+                </div>
+                <div class="input-group">
+                    <label>Created At</label>
+                    <input type="text" id="edit-hwid-created" readonly style="opacity:0.7;">
+                </div>
+                <div class="modal-actions" style="margin-top: 25px; justify-content: space-between;">
+                    <button id="delete-hwid-access-btn" class="danger-btn">Delete Access</button>
+                    <button id="save-hwid-access-btn" class="primary-btn">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
