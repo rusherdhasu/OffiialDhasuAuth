@@ -128,12 +128,12 @@ document.getElementById('save-hwid-access-btn').onclick = async () => {
         await axios.post(`${API_BASE}/admin/app/${currentApp.appId}/save-hwid-access`, data, {
             headers: { Authorization: `Bearer ${token}` }
         });
-        alert('HWID Access saved');
+        showToast('HWID Access saved', 'success');
         document.getElementById('edit-hwid-value').value = ''; // Clear input
         closeModal('edit-hwid-modal');
         loadHwidAccess();
     } catch (err) {
-        alert('Failed to save HWID access');
+        showToast('Failed to save HWID access', 'error');
     }
 };
 
@@ -145,11 +145,11 @@ document.getElementById('delete-hwid-access-btn').onclick = async () => {
         await axios.delete(`${API_BASE}/admin/app/${currentApp.appId}/hwid-access/${hwid}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
-        alert('Access removed');
+        showToast('Access removed', 'success');
         closeModal('edit-hwid-modal');
         loadHwidAccess();
     } catch (err) {
-        alert('Delete failed');
+        showToast('Delete failed', 'error');
     }
 };
 
@@ -388,11 +388,11 @@ document.getElementById('save-user-btn').addEventListener('click', async () => {
             ...updates
         }, { headers: { Authorization: `Bearer ${token}` } });
 
-        // alert('User updated!'); // Optional: remove alert for smoother UX
+        // showToast('User updated!', 'success'); // Optional
         closeModal('edit-user-modal'); // Close modal on save
         loadAppUsers();
     } catch (err) {
-        alert('Failed to update user: ' + (err.response?.data?.message || err.message));
+        showToast('Failed to update user: ' + (err.response?.data?.message || err.message), 'error');
     }
 });
 
@@ -409,7 +409,7 @@ document.getElementById('delete-user-btn').addEventListener('click', async () =>
         closeModal('edit-user-modal');
         loadAppUsers();
     } catch (err) {
-        alert('Failed to delete: ' + (err.response?.data?.message || err.message));
+        showToast('Failed to delete: ' + (err.response?.data?.message || err.message), 'error');
     }
 });
 
@@ -422,12 +422,12 @@ document.getElementById('reset-hwid-btn').addEventListener('click', async () => 
 
     try {
         await axios.post(`${API_BASE}/admin/app/${currentApp.appId}/reset-hwid/${username}`, {}, { headers: { Authorization: `Bearer ${token}` } });
-        alert('HWID Reset!');
+        showToast('HWID Reset!', 'success');
         // Refresh local data
         document.getElementById('edit-hwid').value = "Not Set";
         loadAppUsers();
     } catch (err) {
-        alert('Failed to reset HWID');
+        showToast('Failed to reset HWID', 'error');
     }
 });
 
@@ -464,7 +464,7 @@ document.getElementById('confirm-add-user').onclick = async () => {
         closeModal('add-user-modal');
         loadAppUsers();
     } catch (err) {
-        alert('Failed to add user: ' + (err.response?.data?.message || err.message));
+        showToast('Failed to add user: ' + (err.response?.data?.message || err.message), 'error');
     }
 };
 
@@ -482,7 +482,7 @@ document.getElementById('confirm-create-app').onclick = async () => {
         closeModal('create-app-modal');
         loadApps();
     } catch (err) {
-        alert('Failed to create app');
+        showToast('Failed to create app', 'error');
     }
 };
 
@@ -499,7 +499,7 @@ document.getElementById('login-btn').onclick = async () => {
         localStorage.setItem('user', JSON.stringify(user));
         showDashboard();
     } catch (err) {
-        alert(err.response?.data?.message || 'Login failed');
+        showToast(err.response?.data?.message || 'Login failed', 'error');
     }
 };
 
