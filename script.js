@@ -129,7 +129,7 @@ document.getElementById('save-hwid-access-btn').onclick = async () => {
             headers: { Authorization: `Bearer ${token}` }
         });
         alert('HWID Access saved');
-        document.getElementById('add-hwid-value-field').value = ''; // Clear input
+        document.getElementById('edit-hwid-value').value = ''; // Clear input
         closeModal('edit-hwid-modal');
         loadHwidAccess();
     } catch (err) {
