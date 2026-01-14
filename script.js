@@ -508,12 +508,32 @@ document.getElementById('register-btn').onclick = async () => {
     const email = document.getElementById('reg-email').value;
     const password = document.getElementById('reg-password').value;
 
+    // Validation
+    if (!username || !email || !password) {
+        showToast('All fields are required.', 'error');
+        return;
+    }
+
+    if (username.includes('@')) {
+        showToast('Username cannot be an email address.', 'error');
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showToast('Please enter a valid email address.', 'error');
+        return;
+    }
+
     try {
         await axios.post(`${API_BASE}/auth/register`, { username, email, password });
-        alert('Admin registered successfully! Please login.');
-        document.getElementById('show-login').click();
+        showToast('Admin registered successfully! Please login.', 'success');
+        setTimeout(() => {
+            document.getElementById('show-login').click();
+        }, 1500);
     } catch (err) {
-        alert('Registration failed');
+        const msg = err.response?.data?.message || err.message || 'Registration failed';
+        showToast(msg, 'error');
     }
 };
 
@@ -540,6 +560,44 @@ document.getElementById('show-login').onclick = (e) => {
 window.closeModal = (id) => {
     document.getElementById(id).classList.add('hidden');
 };
+
+
+// Toast Notification System
+function showToast(message, type = 'success') {
+    let container = document.querySelector('.toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast-notification ${type}`;
+
+    const icon = type === 'success' ? 'ph-check-circle' : 'ph-warning-circle';
+    const title = type === 'success' ? 'Success' : 'Error';
+
+    toast.innerHTML = `
+        <i class="ph-fill ${icon} toast-icon"></i>
+        <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+        </div>
+    `;
+
+    container.appendChild(toast);
+
+    // Animation entry
+    requestAnimationFrame(() => {
+        toast.classList.add('active');
+    });
+
+    // Auto remove
+    setTimeout(() => {
+        toast.classList.remove('active');
+        setTimeout(() => toast.remove(), 400);
+    }, 4000);
+}
 
 document.getElementById('user-search').oninput = filterUsers;
 
