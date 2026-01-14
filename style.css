@@ -1071,3 +1071,77 @@ tr:hover {
 .close-modal-btn i {
     z-index: 1;
 }
+
+/* --- TOAST NOTIFICATIONS --- */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 11000;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    pointer-events: none;
+}
+
+.toast-notification {
+    background: rgba(20, 22, 30, 0.95);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    padding: 16px 24px;
+    min-width: 300px;
+    pointer-events: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border-left: 4px solid var(--text-muted);
+}
+
+.toast-notification.active {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-notification.error {
+    border-left-color: var(--danger);
+    background: linear-gradient(to right, rgba(220, 53, 69, 0.1), rgba(20, 22, 30, 0.95) 20%);
+}
+
+.toast-notification.success {
+    border-left-color: var(--success);
+    background: linear-gradient(to right, rgba(40, 167, 69, 0.1), rgba(20, 22, 30, 0.95) 20%);
+}
+
+.toast-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.toast-notification.error .toast-icon {
+    color: var(--danger);
+}
+
+.toast-notification.success .toast-icon {
+    color: var(--success);
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+    color: #fff;
+}
+
+.toast-message {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
