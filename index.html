@@ -141,18 +141,26 @@
                 <div class="panel-config-card">
                     <div class="config-item">
                         <label>Application ID</label>
-                        <div class="secret-container" style="display: flex; align-items: center; gap: 10px;">
-                            <span id="display-app-id" class="config-value">••••••••</span>
-                            <button class="icon-btn" onclick="toggleSecret('display-app-id')" title="Show/Hide">
+                        <div class="secret-container" style="display: flex; gap: 8px;">
+                            <input type="password" id="display-app-id" class="secret-input" readonly value="••••••••">
+                            <button class="icon-btn" onclick="copySecret('display-app-id')" title="Copy ID">
+                                <i class="ph ph-copy"></i>
+                            </button>
+                            <button class="icon-btn" onclick="toggleSecretInput('display-app-id')" title="Show/Hide">
                                 <i class="ph ph-eye"></i>
                             </button>
                         </div>
                     </div>
                     <div class="config-item">
                         <label>Secret Token</label>
-                        <div class="secret-container" style="display: flex; align-items: center; gap: 10px;">
-                            <span id="display-app-secret" class="config-value">••••••••</span>
-                            <button class="icon-btn" onclick="toggleSecret('display-app-secret')" title="Show/Hide">
+                        <div class="secret-container" style="display: flex; gap: 8px;">
+                            <input type="password" id="display-app-secret" class="secret-input" readonly
+                                value="••••••••">
+                            <button class="icon-btn" onclick="copySecret('display-app-secret')" title="Copy Token">
+                                <i class="ph ph-copy"></i>
+                            </button>
+                            <button class="icon-btn" onclick="toggleSecretInput('display-app-secret')"
+                                title="Show/Hide">
                                 <i class="ph ph-eye"></i>
                             </button>
                         </div>
@@ -314,6 +322,16 @@
                 <div class="input-group">
                     <label>System Versioning</label>
                     <input type="text" id="edit-app-version-input" placeholder="e.g. 1.0.4">
+                </div>
+                <div class="input-group"
+                    style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border);">
+                    <label style="color: var(--danger);">Danger Zone</label>
+                    <button id="reset-app-secret-btn" class="secondary-btn"
+                        style="width: 100%; border-color: var(--danger); color: var(--danger);">
+                        <i class="ph ph-arrow-counter-clockwise"></i> RESET SECRET TOKEN
+                    </button>
+                    <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 5px;">This will invalidate the old
+                        token immediately.</p>
                 </div>
                 <div class="modal-actions">
                     <button id="confirm-edit-app" class="primary-btn">UPDATE IDENTITY <i
