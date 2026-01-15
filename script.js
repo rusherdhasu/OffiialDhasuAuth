@@ -250,8 +250,23 @@ async function selectApp(app) {
     };
 
     setSafeInner('selected-app-name', app.name);
-    setSafeInner('display-app-id', app.appId);
-    setSafeInner('display-app-secret', app.secret);
+
+    // Store original values for toggling
+    const appIdEl = document.getElementById('display-app-id');
+    if (appIdEl) {
+        appIdEl.dataset.original = app.appId;
+        appIdEl.innerText = '••••••••';
+    }
+
+    const appSecretEl = document.getElementById('display-app-secret');
+    if (appSecretEl) {
+        appSecretEl.dataset.original = app.secret;
+        appSecretEl.innerText = '••••••••';
+    }
+
+    // Reset icons
+    document.querySelectorAll('.icon-btn i').forEach(icon => icon.className = 'ph ph-eye');
+
     setSafeInner('display-app-version', app.version || '1.0');
 
     // Clear old data instantly
@@ -486,6 +501,65 @@ document.getElementById('confirm-create-app').onclick = async () => {
     }
 };
 
+// Edit App Logic
+document.getElementById('edit-app-btn').onclick = () => {
+    if (!currentApp) return;
+    document.getElementById('edit-app-name').value = currentApp.name;
+    document.getElementById('edit-app-version-input').value = currentApp.version || '1.0';
+    document.getElementById('edit-app-modal').classList.remove('hidden');
+};
+
+document.getElementById('confirm-edit-app').onclick = async () => {
+    if (!currentApp) return;
+    const name = document.getElementById('edit-app-name').value;
+    const version = document.getElementById('edit-app-version-input').value;
+
+    try {
+        await axios.post(`${API_BASE}/admin/app/${currentApp.appId}/update`, {
+            name,
+            version
+        }, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        showToast('App configuration updated', 'success');
+        closeModal('edit-app-modal');
+
+        // Update local currentApp object
+        currentApp.name = name;
+        currentApp.version = version;
+
+        // Refresh UI
+        selectApp(currentApp);
+    } catch (err) {
+        showToast('Failed to update app', 'error');
+    }
+};
+
+// Delete App Logic
+document.getElementById('delete-app-btn').onclick = async () => {
+    if (!currentApp) return;
+
+    if (!confirm(`Are you sure you want to delete panel "${currentApp.name}"?\nThis action cannot be undone and will delete all users.`)) return;
+
+    try {
+        await axios.delete(`${API_BASE}/admin/app/${currentApp.appId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        showToast('Panel deleted successfully', 'success');
+
+        // Reset state
+        currentApp = null;
+        document.getElementById('no-app-selected').classList.remove('hidden');
+        document.getElementById('app-dashboard').classList.add('hidden');
+
+        loadApps();
+    } catch (err) {
+        showToast('Failed to delete panel', 'error');
+    }
+};
+
 // Auth
 document.getElementById('login-btn').onclick = async () => {
     const username = document.getElementById('login-username').value;
@@ -600,6 +674,26 @@ function showToast(message, type = 'success') {
 }
 
 document.getElementById('user-search').oninput = filterUsers;
+
+
+// Toggle Secret Visibility
+window.toggleSecret = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    const original = el.dataset.original;
+    if (!original) return;
+
+    const btn = el.parentElement.querySelector('button i');
+
+    if (el.innerText === '••••••••') {
+        el.innerText = original;
+        if (btn) btn.className = 'ph ph-eye-slash';
+    } else {
+        el.innerText = '••••••••';
+        if (btn) btn.className = 'ph ph-eye';
+    }
+};
 
 // Initial Auth Check
 if (token && user) {
