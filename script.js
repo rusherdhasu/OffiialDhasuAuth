@@ -250,26 +250,8 @@ async function selectApp(app) {
     };
 
     setSafeInner('selected-app-name', app.name);
-
-    // Populate Inputs
-    const appIdEl = document.getElementById('display-app-id');
-    if (appIdEl) {
-        appIdEl.value = app.appId;
-        appIdEl.type = "password"; // Default hidden
-    }
-
-    const appSecretEl = document.getElementById('display-app-secret');
-    if (appSecretEl) {
-        appSecretEl.value = app.secret;
-        appSecretEl.type = "password"; // Default hidden
-    }
-
-    // Reset icons
-    document.querySelectorAll('.icon-btn i.ph-eye-slash').forEach(icon => {
-        icon.classList.remove('ph-eye-slash');
-        icon.classList.add('ph-eye');
-    });
-
+    setSafeInner('display-app-id', app.appId);
+    setSafeInner('display-app-secret', app.secret);
     setSafeInner('display-app-version', app.version || '1.0');
 
     // Clear old data instantly
@@ -539,6 +521,29 @@ document.getElementById('confirm-edit-app').onclick = async () => {
     }
 };
 
+// Handle Reset Secret Token
+document.getElementById('reset-app-secret-btn').onclick = async () => {
+    if (!currentApp) return;
+
+    if (!confirm("DANGER: Resetting the Secret Token will break all active software integrations immediately.\n\nAre you sure you want to proceed?")) return;
+
+    try {
+        const res = await axios.post(`${API_BASE}/admin/app/${currentApp.appId}/reset-secret`, {}, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        // Update local state and UI
+        currentApp.secret = res.data.secret;
+        const secretEl = document.getElementById('display-app-secret');
+        if (secretEl) secretEl.innerText = res.data.secret;
+
+        showToast('Secret Token Reset Successfully', 'success');
+        closeModal('edit-app-modal');
+    } catch (err) {
+        showToast('Failed to reset secret', 'error');
+    }
+};
+
 // Delete App Logic
 document.getElementById('delete-app-btn').onclick = async () => {
     if (!currentApp) return;
@@ -677,78 +682,6 @@ function showToast(message, type = 'success') {
 }
 
 document.getElementById('user-search').oninput = filterUsers;
-
-
-// Toggle Secret Visibility (Input Type)
-window.toggleSecretInput = (id) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-
-    const btn = el.parentElement.querySelector('.icon-btn[onclick*="toggle"] i');
-
-    if (el.type === 'password') {
-        el.type = 'text';
-        if (btn) {
-            btn.className = 'ph ph-eye-slash';
-        }
-    } else {
-        el.type = 'password';
-        if (btn) {
-            btn.className = 'ph ph-eye';
-        }
-    }
-};
-
-// Copy Secret
-window.copySecret = (id) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-
-    navigator.clipboard.writeText(el.value).then(() => {
-        showToast('Copied to clipboard', 'success');
-
-        // Visual Feedback
-        const btn = el.parentElement.querySelector('.icon-btn[onclick*="copy"] i');
-        if (btn) {
-            const originalClass = btn.className;
-            btn.className = 'ph-fill ph-check-circle';
-            btn.style.color = 'var(--success)';
-            setTimeout(() => {
-                btn.className = originalClass;
-                btn.style.color = '';
-            }, 1000);
-        }
-    }).catch(() => {
-        showToast('Failed to copy', 'error');
-    });
-};
-
-// Handle Reset Secret Token
-document.getElementById('reset-app-secret-btn').onclick = async () => {
-    if (!currentApp) return;
-
-    if (!confirm("DANGER: Resetting the Secret Token will break all active software integrations immediately.\n\nAre you sure you want to proceed?")) return;
-
-    try {
-        const res = await axios.post(`${API_BASE}/admin/app/${currentApp.appId}/reset-secret`, {}, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-
-        // Update local state
-        currentApp.secret = res.data.secret;
-
-        // Update UI
-        const secretEl = document.getElementById('display-app-secret');
-        if (secretEl) {
-            secretEl.value = currentApp.secret;
-        }
-
-        showToast('Secret Token Reset Successfully', 'success');
-        closeModal('edit-app-modal');
-    } catch (err) {
-        showToast('Failed to reset secret', 'error');
-    }
-};
 
 // Initial Auth Check
 if (token && user) {
