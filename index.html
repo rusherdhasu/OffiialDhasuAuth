@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DhasuAuth | Secure System</title>
+    <title>DhasuKeys | World-Class Panel</title>
     <link rel="icon" type="image/png" href="favicon.png?v=4">
     <link rel="stylesheet" href="style.css">
     <link
@@ -141,11 +141,21 @@
                 <div class="panel-config-card">
                     <div class="config-item">
                         <label>Application ID</label>
-                        <span id="display-app-id" class="config-value">-</span>
+                        <div class="secret-container" style="display: flex; align-items: center; gap: 10px;">
+                            <span id="display-app-id" class="config-value">••••••••</span>
+                            <button class="icon-btn" onclick="toggleSecret('display-app-id')" title="Show/Hide">
+                                <i class="ph ph-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="config-item">
                         <label>Secret Token</label>
-                        <span id="display-app-secret" class="config-value">-</span>
+                        <div class="secret-container" style="display: flex; align-items: center; gap: 10px;">
+                            <span id="display-app-secret" class="config-value">••••••••</span>
+                            <button class="icon-btn" onclick="toggleSecret('display-app-secret')" title="Show/Hide">
+                                <i class="ph ph-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="config-item">
                         <label>Panel version</label>
@@ -459,6 +469,3 @@
 </body>
 
 </html>
-
-
-
