@@ -91,7 +91,7 @@ window.selectHwidAccess = (hwid) => {
     document.getElementById('edit-hwid-value').setAttribute('readonly', 'true'); // Enforce readonly for edit
     document.getElementById('edit-hwid-status').value = h.status || 'active';
     document.getElementById('edit-hwid-reason').value = h.reason || '';
-    document.getElementById('edit-hwid-expiry').value = h.expires ? h.expires.split('T')[0] : '';
+    document.getElementById('edit-hwid-expiry').value = (h.expires && h.expires !== 'Lifetime' && h.expires !== 'Permanent') ? h.expires.split('T')[0] : '';
     document.getElementById('edit-hwid-created').value = h.createdAt ? new Date(h.createdAt).toLocaleString() : 'N/A';
 
     // Open Modal
@@ -321,8 +321,9 @@ function filterUsers() {
 
             const formatDate = (d) => d ? new Date(d).toLocaleString() : '-';
             const formatExpiry = (d) => {
-                if (!d) return 'Lifetime';
+                if (!d || d === 'Lifetime' || d === 'Permanent') return 'Lifetime';
                 const date = new Date(d);
+                if (isNaN(date.getTime())) return 'Lifetime';
                 return date < new Date() ? `<span style="color:var(--danger)">Expired</span>` : date.toLocaleDateString();
             };
 
@@ -356,7 +357,7 @@ function selectUser(username) {
         lockCheckbox.checked = (user.hwidLock === false);
     }
 
-    if (user.expires) {
+    if (user.expires && user.expires !== 'Lifetime' && user.expires !== 'Permanent') {
         document.getElementById('edit-expiry').value = user.expires.split('T')[0];
     } else {
         document.getElementById('edit-expiry').value = "";
@@ -452,7 +453,7 @@ document.getElementById('confirm-add-user').onclick = async () => {
         username,
         password,
         status: 'active',
-        expires: duration === '36500' ? null : expiryDate.toISOString(),
+        expires: (duration === '36500' || !duration) ? 'Lifetime' : expiryDate.toISOString(),
         hwidLock: !document.getElementById('add-hwid-lock-disable').checked
     };
 
