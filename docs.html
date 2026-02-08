@@ -30,7 +30,7 @@
                 <a href="/#features">Features</a>
                 <a href="/#pricing">Pricing</a>
                 <a href="/docs" style="color: var(--primary); font-weight: 600;">Documentation</a>
-                <a href="/login">Login</a>
+                <a href="/app">Login</a>
             </div>
         </div>
     </nav>
@@ -254,7 +254,7 @@ std::string LoginManager::HttpRequest(std::string path, std::string payload) {
 
 bool LoginManager::LoginWithPassword(std::string username, std::string password) {
     std::string payload = "{\"username\":\"" + username + "\", \"password\":\"" + password + "\", \"hwid\":\"" + GetHWID() + "\"}";
-    std::string res = HttpRequest("/api/license/login", payload);
+    std::string res = HttpRequest("/api/license/app", payload);
     return (res.find("\"success\":true") != std::string::npos);
 }
 
@@ -370,7 +370,7 @@ public static class LoginManager
                 client.DefaultRequestHeaders.Add("App-Secret", appSecret);
                 client.DefaultRequestHeaders.Add("Client-Version", localVersion);
 
-                string url = $"{backendUrl}license/login";
+                string url = $"{backendUrl}license/app";
                 var body = new JObject
                 {
                     ["username"] = username,
