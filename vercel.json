@@ -1,26 +1,17 @@
 {
+    "cleanUrls": true,
     "rewrites": [
         {
             "source": "/api/:path*",
             "destination": "http://217.154.173.102:9537/api/:path*"
         },
         {
-            "source": "/",
-            "destination": "/index.html"
-        },
-        {
             "source": "/login",
             "destination": "/app.html"
-        },
-        {
-            "source": "/docs",
-            "destination": "/docs.html"
         },
         {
             "source": "/app",
             "destination": "/app.html"
         }
-    ],
-    "cleanUrls": true,
-    "trailingSlash": false
+    ]
 }
