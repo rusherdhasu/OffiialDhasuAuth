@@ -1274,7 +1274,7 @@ tr:hover {
 /* Hero Section */
 .hero-section {
     position: relative;
-    padding: 80px 20px 40px;
+    padding: 150px 20px 80px;
     text-align: center;
     overflow: hidden;
 }
@@ -1336,7 +1336,7 @@ tr:hover {
 }
 
 .text-gradient {
-    background: linear-gradient(135deg, #fff 40%, var(--primary));
+    background: linear-gradient(135deg, var(--primary) 20%, #8a2be2 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
