@@ -1,7 +1,6 @@
 {
     "version": 2,
     "cleanUrls": true,
-    "trailingSlash": false,
     "rewrites": [
         {
             "source": "/api/:path*",
@@ -9,10 +8,6 @@
         },
         {
             "source": "/login",
-            "destination": "/app.html"
-        },
-        {
-            "source": "/app",
             "destination": "/app.html"
         },
         {
