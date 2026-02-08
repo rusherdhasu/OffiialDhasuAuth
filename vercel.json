@@ -1,6 +1,7 @@
 {
     "version": 2,
     "cleanUrls": true,
+    "trailingSlash": false,
     "rewrites": [
         {
             "source": "/api/:path*",
@@ -17,6 +18,10 @@
         {
             "source": "/docs",
             "destination": "/docs.html"
+        },
+        {
+            "source": "/",
+            "destination": "/index.html"
         }
     ]
 }
