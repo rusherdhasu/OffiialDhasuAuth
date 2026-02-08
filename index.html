@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DhasuAuth | Secure Licensing System</title>
+    <link rel="icon" type="image/png" href="favicon.png?v=2">
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="landing-body">
+    <!-- Navigation -->
+    <nav class="landing-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="ph-fill ph-fingerprint" style="color:var(--primary)"></i>DhasuAuth
+            </div>
+            <div class="nav-links">
+                <a href="/" style="color: var(--primary); font-weight: 600;">Home</a>
+                <a href="/#features">Features</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/docs">Documentation</a>
+                <a href="/login" style="color: var(--primary); font-weight: 600;">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="hero-bg">
+            <div class="hero-blob"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <div class="status-dot"></div>
+                Trusted by 500+ Developers
+            </div>
+            <h1>The Most <span class="text-gradient">Powerful</span> <br>Auth For Software</h1>
+            <p>Secure your applications with military-grade encryption, HWID locking, and real-time dashboard
+                management.
+                Built for professional developers.</p>
+            <div class="hero-actions">
+                <a href="/login" class="primary-btn hero-btn">Get Started Now <i class="ph ph-rocket-launch"></i></a>
+                <a href="/docs" class="ghost-btn hero-btn">View Documentation</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat-item">
+                    <h3>99.9%</h3>
+                    <span>Uptime</span>
+                </div>
+                <div class="hero-stat-item">
+                    <h3>50ms</h3>
+                    <span>Latency</span>
+                </div>
+                <div class="hero-stat-item">
+                    <h3>256-bit</h3>
+                    <span>Encryption</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="section-title">
+            <h2>Why Choose <span class="text-gradient">DhasuAuth</span>?</h2>
+            <p>Everything you need to protect and monetize your software.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="f-icon"><i class="ph-fill ph-shield-check"></i></div>
+                <h3>Anti-Tamper</h3>
+                <p>Advanced protection against debuggers, dumpers, and unauthorized modifications.</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon"><i class="ph-fill ph-cpu"></i></div>
+                <h3>HWID Locking</h3>
+                <p>Strict hardware identification ensuring one license works on one machine only.</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon"><i class="ph-fill ph-chart-line-up"></i></div>
+                <h3>Real-time Logs</h3>
+                <p>Monitor status, connections, and suspicious activities directly from your dashboard.</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon"><i class="ph-fill ph-code"></i></div>
+                <h3>Easy Integration</h3>
+                <p>SDKs available for C++, C#, Python, and more. Get protected in under 5 minutes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Section -->
+    <section class="integration-section" id="integration">
+        <div class="nav-container">
+            <div class="section-title">
+                <h2>Integration <span class="text-gradient">Hub</span></h2>
+                <p>Pick your language and get a full ready-to-use project in seconds.</p>
+            </div>
+
+            <div class="integration-hub-grid">
+                <!-- Python Card -->
+                <div class="integration-card card-python">
+                    <div class="integration-badge">Modern SDK</div>
+                    <div class="lang-icon-wrapper">
+                        <i class="ph-fill ph-file-py" style="color: #3776AB"></i>
+                    </div>
+                    <h3>Python Client</h3>
+                    <p>Professional integration with CustomTkinter UI, real-time logging, and absolute security.</p>
+                    <a href="downloads/DhasuAuth_Python.zip" download class="download-sdk-btn">
+                        <i class="ph-fill ph-download-simple"></i> Download Full SDK
+                    </a>
+                </div>
+
+                <!-- C# Card -->
+                <div class="integration-card card-csharp">
+                    <div class="integration-badge">WinForms / .NET</div>
+                    <div class="lang-icon-wrapper">
+                        <i class="ph-fill ph-hash" style="color: #68217A"></i>
+                    </div>
+                    <h3>C# Solution</h3>
+                    <p>Complete C# integration with Visual Studio projects, License Managers, and UI forms.</p>
+                    <a href="downloads/DhasuAuth_CSharp.zip" download class="download-sdk-btn">
+                        <i class="ph-fill ph-download-simple"></i> Download Full SDK
+                    </a>
+                </div>
+
+                <!-- C++ Card -->
+                <div class="integration-card card-cpp">
+                    <div class="integration-badge">Native High-Perf</div>
+                    <div class="lang-icon-wrapper">
+                        <i class="ph-fill ph-file-code" style="color: #00599C"></i>
+                    </div>
+                    <h3>C++ Client</h3>
+                    <p>Native Win32 implementation (WinInet) for maximum performance and anti-reversing.</p>
+                    <a href="downloads/DhasuAuth_Cpp.zip" download class="download-sdk-btn">
+                        <i class="ph-fill ph-download-simple"></i> Download Full SDK
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="features-section" style="background: rgba(10, 11, 16, 0.4);">
+        <div class="section-title">
+            <h2>Ready to <span class="text-gradient">Scale</span>?</h2>
+            <p>Flexible plans for developers of all sizes. No hidden fees.</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>Starter</h3>
+                <p class="p-desc">Perfect for small hobby projects</p>
+                <div class="price">$0<span>/mo</span></div>
+                <ul class="pricing-features">
+                    <li><i class="ph-fill ph-check-circle"></i> 50 Active Users</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Basic HWID Lock</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Standard Encryption</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Community Support</li>
+                    <li class="disabled"><i class="ph-fill ph-x-circle"></i> Custom Branding</li>
+                    <li class="disabled"><i class="ph-fill ph-x-circle"></i> API Access</li>
+                </ul>
+                <a href="/login" class="ghost-btn" style="width: 100%;">Get Started</a>
+            </div>
+
+            <div class="pricing-card highlighted">
+                <div class="popular-badge">RECOMMENDED</div>
+                <h3>Professional</h3>
+                <p class="p-desc">Everything you need to grow</p>
+                <div class="price">$19<span>/mo</span></div>
+                <ul class="pricing-features">
+                    <li><i class="ph-fill ph-check-circle"></i> Unlimited Users</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Advanced Anti-Tamper</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Real-time Analytics</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Custom Branding</li>
+                    <li><i class="ph-fill ph-check-circle"></i> API Access</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Priority Support</li>
+                </ul>
+                <a href="/login" class="primary-btn" style="width: 100%;">Start Pro Trial</a>
+            </div>
+
+            <div class="pricing-card">
+                <h3>Enterprise</h3>
+                <p class="p-desc">For large scale operations</p>
+                <div class="price">$49<span>/mo</span></div>
+                <ul class="pricing-features">
+                    <li><i class="ph-fill ph-check-circle"></i> Everything in Pro</li>
+                    <li><i class="ph-fill ph-check-circle"></i> White-label SDK</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Custom Domain</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Source Code Access</li>
+                    <li><i class="ph-fill ph-check-circle"></i> Dedicated Manager</li>
+                    <li><i class="ph-fill ph-check-circle"></i> 24/7 Phone Support</li>
+                </ul>
+                <a href="/login" class="ghost-btn" style="width: 100%;">Contact Sales</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="section-title">
+            <h2>Frequently Asked <span class="text-gradient">Questions</span></h2>
+            <p>Everything you need to know about DhasuAuth security.</p>
+        </div>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is DhasuAuth really military-grade?
+                    <i class="ph ph-caret-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Yes, we use industry-standard AES-256 encryption and advanced anti-debug/anti-tamper technologies
+                    to ensure your software remains secure against the most advanced crackers.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    How long does it take to integrate?
+                    <i class="ph ph-caret-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Integration typically takes less than 5 minutes. Our SDKs are designed to be "plug-and-play" with
+                    minimal configuration required on your part.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Do you support custom branding?
+                    <i class="ph ph-caret-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Absolutely! Our Professional and Enterprise plans allow you to fully customize the login
+                    experience with your own logos, colors, and branding elements.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <div class="footer-content">
+            <p>&copy; 2026 DhasuAuth Security Systems. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="/docs">Terms Service</a>
+                <a href="/docs">Privacy Policy</a>
+                <a href="mailto:support@dhasuauth.com">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // FAQ Logic
+            document.querySelectorAll('.faq-question').forEach(q => {
+                q.addEventListener('click', () => {
+                    q.parentElement.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

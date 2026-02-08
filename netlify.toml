@@ -1,0 +1,20 @@
+[[redirects]]
+  from = "/api/*"
+  to = "http://217.154.173.102:9537/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/login"
+  to = "/app.html"
+  status = 200
+
+[[redirects]]
+  from = "/docs"
+  to = "/docs.html"
+  status = 200
+
+[[redirects]]
+  from = "/app"
+  to = "/app.html"
+  status = 200

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation | DhasuAuth</title>
+    <link rel="icon" type="image/png" href="favicon.png?v=2">
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
+
+<body class="docs-body">
+    <!-- Navbar -->
+    <nav class="landing-nav"
+        style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(10, 11, 16, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.08);">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="ph-fill ph-fingerprint" style="color:var(--primary)"></i>DhasuAuth
+            </div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/#features">Features</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/docs" style="color: var(--primary); font-weight: 600;">Documentation</a>
+                <a href="/login">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="docs-container" style="padding-top: 70px;">
+        <!-- Sidebar -->
+        <aside class="docs-sidebar">
+            <div class="docs-menu">
+                <div class="menu-category">GETTING STARTED</div>
+                <a href="#intro" class="menu-item active">Introduction</a>
+                <a href="#credentials" class="menu-item">API Keys</a>
+
+                <div class="menu-category">INTEGRATIONS</div>
+                <a href="#python" class="menu-item">Python SDK</a>
+                <a href="#cpp" class="menu-item">C++ Example</a>
+                <a href="#csharp" class="menu-item">C# Loader</a>
+
+                <div class="menu-category">API REFERENCE</div>
+                <a href="#endpoints" class="menu-item">Endpoints</a>
+                <a href="#errors" class="menu-item">Error Codes</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="docs-content">
+            <section id="intro">
+                <h1>Introduction</h1>
+                <p>Welcome to the <strong>DhasuAuth</strong> developer documentation. integrate our military-grade
+                    licensing system into your application in minutes.</p>
+                <div class="info-box">
+                    <i class="ph-fill ph-info"></i>
+                    <p><strong>Note:</strong> All API requests must be made over HTTPS in production.</p>
+                </div>
+            </section>
+
+            <section id="credentials">
+                <h2>1. Get Your API Keys</h2>
+                <p>To start integrating, you need your <strong>Application ID</strong> and <strong>Secret
+                        Token</strong>.</p>
+                <ol>
+                    <li>Login to the <a href="app.html">Dashboard</a>.</li>
+                    <li>Create a new Panel or select an existing one.</li>
+                    <li>Copy these values from the "Panel Configuration" card.</li>
+                </ol>
+            </section>
+
+            <section id="python">
+                <div class="section-header-group">
+                    <h2>Python Integration</h2>
+                    <button class="action-btn-small"><i class="ph ph-download-simple"></i> Download .py</button>
+                </div>
+                <p>Complete <code>main.py</code> from the LoginTest example. Handles HWID and Password Login.</p>
+                <pre><code class="language-python">import requests
+import subprocess
+import json
+import os
+
+# Configuration
+API_BASE_URL = "http://217.154.173.102:9537/api/"
+APP_ID = "YOUR_APP_ID"
+APP_SECRET = "YOUR_SECRET_TOKEN"
+CLIENT_VERSION = "1.0.0"
+
+def get_hwid():
+    """Fetches the Windows UUID as a unique HWID."""
+    try:
+        cmd = 'powershell.exe (Get-WmiObject Win32_ComputerSystemProduct).UUID'
+        uuid = subprocess.check_output(cmd, shell=True).decode().strip()
+        return uuid
+    except Exception as e:
+        return "UNKNOWN_HWID"
+
+def login_with_password(username, password):
+    url = f"{API_BASE_URL}auth/client-login"
+    payload = {
+        "username": username,
+        "password": password,
+        "appId": APP_ID,
+        "secret": APP_SECRET,
+        "hwid": get_hwid()
+    }
+    
+    try:
+        response = requests.post(url, json=payload)
+        if response.status_code == 200:
+            print(f"✅ Login Successful! Token: {response.json().get('token')}")
+            return True
+        else:
+            print(f"❌ Login Failed: {response.json().get('message')}")
+            return False
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+
+if __name__ == "__main__":
+    print("--- DhasuAuth Python Client ---")
+    user = input("Username: ")
+    pw = input("Password: ")
+    login_with_password(user, pw)
+</code></pre>
+            </section>
+
+            <section id="cpp">
+                <div class="section-header-group">
+                    <h2>C++ Integration</h2>
+                    <br>
+                    <button class="action-btn-small"><i class="ph ph-download-simple"></i> Download Project</button>
+                </div>
+
+                <h3>1. Main Logic (main.cpp)</h3>
+                <p>Entry point logic handling user input and calling the manager.</p>
+                <pre><code class="language-cpp">#include "LoginManager.h"
+#include <iostream>
+
+void Header() {
+    std::cout << "========================================\n";
+    std::cout << "     DHASU AUTH - C++ CLIENT TESTER     \n";
+    std::cout << "========================================\n";
+    std::cout << "HWID: " << LoginManager::GetHWID() << "\n\n";
+}
+
+int main() {
+    Header();
+    std::cout << "1. Login (User/Pass)\n";
+    std::cout << "2. Login (HWID Whitelist)\n";
+    
+    int choice;
+    std::cin >> choice;
+
+    if (choice == 1) {
+        std::string user, pass;
+        std::cout << "Username: "; std::cin >> user;
+        std::cout << "Password: "; std::cin >> pass;
+
+        if (LoginManager::LoginWithPassword(user, pass)) {
+            std::cout << "\n[+] Access Granted!\n";
+        } else {
+            std::cout << "\n[-] Access Denied.\n";
+        }
+    } else if (choice == 2) {
+        if (LoginManager::LoginWithHWID()) {
+            std::cout << "\n[+] HWID Authorized!\n";
+        } else {
+            std::cout << "\n[-] HWID Not Authorized.\n";
+        }
+    }
+    
+    system("pause");
+    return 0;
+}</code></pre>
+
+                <h3>2. Manager Header (LoginManager.h)</h3>
+                <p>Define your text class structure.</p>
+                <pre><code class="language-cpp">#ifndef LOGIN_MANAGER_H
+#define LOGIN_MANAGER_H
+
+#include <string>
+
+class LoginManager {
+public:
+    static std::string backend_url;
+    static std::string app_id;
+    static std::string app_secret;
+
+    static std::string GetHWID();
+    static std::string HttpRequest(std::string path, std::string payload);
+    static bool LoginWithPassword(std::string username, std::string password);
+    static bool LoginWithHWID();
+};
+
+#endif</code></pre>
+
+                <h3>3. Manager Logic (LoginManager.cpp)</h3>
+                <p>Implementation of HTTP requests and HWID fetching using WinInet.</p>
+                <pre><code class="language-cpp">#include "LoginManager.h"
+#include <windows.h>
+#include <wininet.h>
+#include <iostream>
+
+#pragma comment(lib, "wininet.lib")
+
+std::string LoginManager::backend_url = "217.154.173.102";
+std::string LoginManager::app_id = "7ECD1305";
+std::string LoginManager::app_secret = "0bf157628ad00b4376e9fc85332a0508";
+
+std::string LoginManager::GetHWID() {
+    HW_PROFILE_INFOA hwProfileInfo;
+    if (GetCurrentHwProfileA(&hwProfileInfo)) {
+        return hwProfileInfo.szHwProfileGuid;
+    }
+    return "{UNKNOWN-HWID-CP}";
+}
+
+std::string LoginManager::HttpRequest(std::string path, std::string payload) {
+    HINTERNET hSession = InternetOpenA("DhasuAuth-CppClient/1.0", INTERNET_OPEN_TYPE_DIRECT, NULL, NULL, 0);
+    if (!hSession) return "{\"success\":false}";
+
+    HINTERNET hConnect = InternetConnectA(hSession, backend_url.c_str(), 9537, NULL, NULL, INTERNET_SERVICE_HTTP, 0, 0);
+    if (!hConnect) { InternetCloseHandle(hSession); return "{\"success\":false}"; }
+
+    const char* acceptTypes[] = { "application/json", NULL };
+    HINTERNET hRequest = HttpOpenRequestA(hConnect, "POST", path.c_str(), NULL, NULL, acceptTypes, INTERNET_FLAG_RELOAD, 0);
+    
+    std::string headers = "App-Id: " + app_id + "\r\nApp-Secret: " + app_secret + "\r\nContent-Type: application/json\r\n";
+    BOOL sent = HttpSendRequestA(hRequest, headers.c_str(), (DWORD)headers.length(), (LPVOID)payload.c_str(), (DWORD)payload.length());
+    
+    std::string response = "";
+    if (sent) {
+        char buffer[1024];
+        DWORD bytesRead;
+        while (InternetReadFile(hRequest, buffer, sizeof(buffer), &bytesRead) && bytesRead > 0) {
+            response.append(buffer, bytesRead);
+        }
+    }
+    
+    InternetCloseHandle(hRequest);
+    InternetCloseHandle(hConnect);
+    InternetCloseHandle(hSession);
+    return response;
+}
+
+bool LoginManager::LoginWithPassword(std::string username, std::string password) {
+    std::string payload = "{\"username\":\"" + username + "\", \"password\":\"" + password + "\", \"hwid\":\"" + GetHWID() + "\"}";
+    std::string res = HttpRequest("/api/license/login", payload);
+    return (res.find("\"success\":true") != std::string::npos);
+}
+
+bool LoginManager::LoginWithHWID() {
+    std::string payload = "{\"hwid\":\"" + GetHWID() + "\"}";
+    std::string res = HttpRequest("/api/license/hwid-login", payload);
+    return (res.find("\"success\":true") != std::string::npos);
+}</code></pre>
+            </section>
+
+            <section id="csharp">
+                <div class="section-header-group">
+                    <h2>C# Integration (WinForms)</h2>
+                    <br>
+                    <button class="action-btn-small"><i class="ph ph-download-simple"></i> Download Solution</button>
+                </div>
+
+                <h3>1. UI Logic (Form1.cs)</h3>
+                <p>Handling button clicks and UI updates.</p>
+                <pre><code class="language-csharp">using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Threading.Tasks;
+
+namespace LoginTest
+{
+    public partial class Form1 : Form
+    {
+        public Form1() { InitializeComponent(); SetupUI(); }
+
+        private async void btnLogin_Click(object sender, EventArgs e)
+        {
+            string username = txtUsername.Text;
+            string password = txtPassword.Text;
+
+            SetLoading(true);
+            lblStatus.Text = "Status: Authenticating...";
+
+            bool success = await LoginManager.LoginWithUsernamePasswordAsync(username, password);
+
+            if (success) {
+                lblStatus.Text = "Status: Connected";
+                lblStatus.ForeColor = Color.Green;
+            } else {
+                lblStatus.Text = "Status: Access Denied";
+                lblStatus.ForeColor = Color.Red;
+            }
+            SetLoading(false);
+        }
+
+        private async void btnLoginHWID_Click(object sender, EventArgs e)
+        {
+            SetLoading(true);
+            lblStatus.Text = "Status: Checking Whitelist...";
+            
+            bool success = await LoginManager.LoginWithHWIDAccessAsync();
+
+            if (success) {
+                lblStatus.Text = "Status: Whitelisted";
+                lblStatus.ForeColor = Color.Green;
+            } else {
+                lblStatus.Text = "Status: Not Whitelisted";
+                lblStatus.ForeColor = Color.Red;
+            }
+            SetLoading(false);
+        }
+    }
+}</code></pre>
+
+                <h3>2. Core Logic (LoginManager.cs)</h3>
+                <p>The <code>LoginManager</code> class handles all API communication, HWID fetching, and JSON parsing.
+                    <strong>Copy this entire file</strong>.
+                </p>
+                <div class="info-box">
+                    <i class="ph-fill ph-info"></i>
+                    <p>Requires <code>Newtonsoft.Json</code> package.</p>
+                </div>
+                <pre><code class="language-csharp">using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
+using System.Net.Http;
+using System.Security.Principal;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+public static class LoginManager
+{
+    // Configuration
+    public static string backendUrl = "http://217.154.173.102:9537/api/";
+    public static string appId = "7ECD1305";
+    public static string appSecret = "0bf157628ad00b4376e9fc85332a0508";
+    public static string localVersion = "1.0.0";
+
+    // ✅ Get System HWID
+    public static string GetHWID()
+    {
+        try {
+            return WindowsIdentity.GetCurrent().User.Value;
+        } catch {
+            return "UNKNOWN_HWID";
+        }
+    }
+
+    // ✅ Login with Username & Password
+    public static async Task<bool> LoginWithUsernamePasswordAsync(string username, string password)
+    {
+        try
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("App-Id", appId);
+                client.DefaultRequestHeaders.Add("App-Secret", appSecret);
+                client.DefaultRequestHeaders.Add("Client-Version", localVersion);
+
+                string url = $"{backendUrl}license/login";
+                var body = new JObject
+                {
+                    ["username"] = username,
+                    ["password"] = password ?? "",
+                    ["hwid"] = GetHWID()
+                };
+
+                var content = new StringContent(body.ToString(), Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(url, content);
+                string responseString = await response.Content.ReadAsStringAsync();
+                
+                JObject result = JObject.Parse(responseString);
+
+                if (result["success"]?.ToObject<bool>() == true)
+                {
+                    string expires = result["expires"]?.ToString() ?? "Lifetime";
+                    MessageBox.Show($"Access Granted!\nExpiry: {expires}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return true;
+                }
+                
+                MessageBox.Show(result["message"]?.ToString() ?? "Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
+
+    // ✅ Login with HWID
+    public static async Task<bool> LoginWithHWIDAccessAsync()
+    {
+        try
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("App-Id", appId);
+                client.DefaultRequestHeaders.Add("App-Secret", appSecret);
+
+                var body = new JObject { ["hwid"] = GetHWID() };
+                var content = new StringContent(body.ToString(), Encoding.UTF8, "application/json");
+                
+                var response = await client.PostAsync($"{backendUrl}license/hwid-login", content);
+                var result = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                return result["success"]?.ToObject<bool>() == true;
+            }
+        }
+        catch { return false; }
+    }
+}</code></pre>
+            </section>
+
+            <footer
+                style="margin-top: 100px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-dim);">
+                <p>&copy; 2026 DhasuAuth API. <a href="#">Support</a></p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Simple scroll spy logic
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
