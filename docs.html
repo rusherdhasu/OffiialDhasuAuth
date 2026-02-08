@@ -19,8 +19,7 @@
 
 <body class="docs-body">
     <!-- Navbar -->
-    <nav class="landing-nav"
-        style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(10, 11, 16, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.08);">
+    <nav class="landing-nav">
         <div class="nav-container">
             <div class="logo">
                 <i class="ph-fill ph-fingerprint" style="color:var(--primary)"></i>DhasuAuth
@@ -29,13 +28,13 @@
                 <a href="/">Home</a>
                 <a href="/#features">Features</a>
                 <a href="/#pricing">Pricing</a>
-                <a href="/docs" style="color: var(--primary); font-weight: 600;">Documentation</a>
-                <a href="/app">Login</a>
+                <a href="/docs" class="active">Documentation</a>
+                <a href="/app" class="nav-login-btn">Login</a>
             </div>
         </div>
     </nav>
 
-    <div class="docs-container" style="padding-top: 70px;">
+    <div class="docs-container" style="padding-top: 100px;">
         <!-- Sidebar -->
         <aside class="docs-sidebar">
             <div class="docs-menu">
@@ -254,7 +253,7 @@ std::string LoginManager::HttpRequest(std::string path, std::string payload) {
 
 bool LoginManager::LoginWithPassword(std::string username, std::string password) {
     std::string payload = "{\"username\":\"" + username + "\", \"password\":\"" + password + "\", \"hwid\":\"" + GetHWID() + "\"}";
-    std::string res = HttpRequest("/api/license/app", payload);
+    std::string res = HttpRequest("/api/license/login", payload);
     return (res.find("\"success\":true") != std::string::npos);
 }
 
@@ -370,7 +369,7 @@ public static class LoginManager
                 client.DefaultRequestHeaders.Add("App-Secret", appSecret);
                 client.DefaultRequestHeaders.Add("Client-Version", localVersion);
 
-                string url = $"{backendUrl}license/app";
+                string url = $"{backendUrl}license/login";
                 var body = new JObject
                 {
                     ["username"] = username,
