@@ -1247,8 +1247,9 @@ tr:hover {
     transition: var(--transition);
 }
 
-.nav-links a:hover {
-    color: #fff;
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary) !important;
 }
 
 .nav-login-btn {
@@ -1393,6 +1394,7 @@ tr:hover {
     max-width: 1200px;
     margin: 0 auto;
     padding: 50px 20px;
+    scroll-margin-top: 100px;
 }
 
 .section-title {
@@ -1465,6 +1467,7 @@ tr:hover {
     gap: 30px;
     max-width: 1100px;
     margin: 0 auto;
+    scroll-margin-top: 100px;
 }
 
 .pricing-card {
@@ -1571,6 +1574,7 @@ tr:hover {
     max-width: 1200px;
     margin: 120px auto;
     padding: 0 20px;
+    scroll-margin-top: 100px;
 }
 
 .code-switcher-container {
