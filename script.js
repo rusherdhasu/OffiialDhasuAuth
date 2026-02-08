@@ -1,4 +1,4 @@
-const API_BASE = 'http://217.154.173.102:9537/api';
+const API_BASE = '/api';
 let token = localStorage.getItem('token');
 let user = JSON.parse(localStorage.getItem('user'));
 let myApps = [];
