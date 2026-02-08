@@ -20,11 +20,11 @@
                 <i class="ph-fill ph-fingerprint" style="color:var(--primary)"></i>DhasuAuth
             </div>
             <div class="nav-links">
-                <a href="/" style="color: var(--primary); font-weight: 600;">Home</a>
+                <a href="/" class="active">Home</a>
                 <a href="/#features">Features</a>
                 <a href="/#pricing">Pricing</a>
                 <a href="/docs">Documentation</a>
-                <a href="/app" style="color: var(--primary); font-weight: 600;">Login</a>
+                <a href="/app" class="nav-login-btn">Login</a>
             </div>
         </div>
     </nav>
@@ -259,6 +259,15 @@
             document.querySelectorAll('.faq-question').forEach(q => {
                 q.addEventListener('click', () => {
                     q.parentElement.classList.toggle('active');
+                });
+            });
+
+            // Nav Active State Logic
+            const navLinks = document.querySelectorAll('.nav-links a:not(.nav-login-btn)');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
                 });
             });
         });
